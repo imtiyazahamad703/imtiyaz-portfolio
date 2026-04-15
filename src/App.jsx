@@ -1,0 +1,1 @@
+import React from 'react';\n\nconst App = () => {\n  return (\n    <div className="bg-[#050414] text-white min-h-screen">\n      <h1>Imtiyaz Portfolio</h1>\n    </div>\n  );\n};\n\nexport default App;
