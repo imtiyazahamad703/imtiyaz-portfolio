@@ -44,8 +44,8 @@ const About = () => {
           </p>
           {/* Resume Button */}
           <a
-            href="/extra-data/Imtiyaz_Portfolio_Resume.pdf"
-            download="Imtiyaz_Ahamad_Resume.pdf"
+            href="/extra-data/Imtiyaz_Ahamad_AI_Engineer.pdf"
+            download="Imtiyaz_Ahamad_AI_Engineer.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block text-white py-3 px-8 rounded-full mt-5 text-lg font-bold transition duration-300 transform hover:scale-105"
