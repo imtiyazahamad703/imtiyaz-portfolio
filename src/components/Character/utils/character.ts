@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { DRACOLoader, GLTF, GLTFLoader } from "three-stdlib";
+import { GLTF, GLTFLoader } from "three-stdlib";
 
 const setCharacter = (
   renderer: THREE.WebGLRenderer,
@@ -7,41 +7,43 @@ const setCharacter = (
   camera: THREE.PerspectiveCamera
 ) => {
   const loader = new GLTFLoader();
-  const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("/draco/");
-  loader.setDRACOLoader(dracoLoader);
 
-  const loadModels = async (): Promise<{ wavingGltf: GLTF, standingGltf: GLTF }> => {
+  const prepareModel = (character: THREE.Group) => {
+    character.traverse((child: any) => {
+      if (child.isMesh) {
+        const mesh = child as THREE.Mesh;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.frustumCulled = true;
+      }
+    });
+  };
+
+  const loadWavingModel = async (): Promise<GLTF> => {
     try {
       const wavingGltf = await loader.loadAsync("/models/imtiyaz_waving.glb");
-      const standingGltf = await loader.loadAsync("/models/imtiyaz_standing.glb");
-      
-      const prepareModel = (character: THREE.Group) => {
-        character.traverse((child: any) => {
-          if (child.isMesh) {
-            const mesh = child as THREE.Mesh;
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-            mesh.frustumCulled = true;
-          }
-        });
-      }
-
       prepareModel(wavingGltf.scene);
-      prepareModel(standingGltf.scene);
-      
       await renderer.compileAsync(wavingGltf.scene, camera, scene);
-      await renderer.compileAsync(standingGltf.scene, camera, scene);
-      
-      dracoLoader.dispose();
-      return { wavingGltf, standingGltf };
+      return wavingGltf;
     } catch (error) {
-      console.error("Error loading GLTF models:", error);
+      console.error("Error loading waving model:", error);
       throw error;
     }
   };
 
-  return { loadModels };
+  const loadStandingModel = async (): Promise<GLTF> => {
+    try {
+      const standingGltf = await loader.loadAsync("/models/imtiyaz_standing.glb");
+      prepareModel(standingGltf.scene);
+      await renderer.compileAsync(standingGltf.scene, camera, scene);
+      return standingGltf;
+    } catch (error) {
+      console.error("Error loading standing model:", error);
+      throw error;
+    }
+  };
+
+  return { loadWavingModel, loadStandingModel };
 };
 
 export default setCharacter;

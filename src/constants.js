@@ -149,7 +149,7 @@ export const experiences = [
     img: webverseLogo,
     role: "Software Engineer Intern",
     company: "mple.ai",
-    date: "Jan 2026 – Jun 2026",
+    date: "Jan 2026 – Jul 2026",
     desc: [
       "Built Global Bot, an enterprise RAG knowledge bot that answers employee questions from company PDFs, PPTs, and URLs, with background training via AWS SQS.",
       "Developed a \"Chat with Data\" AI feature that allows users to seamlessly talk to their Excel and CSV files in plain text, powered by an LLM Text-to-SQL router and DuckDB querying over Parquet files on S3.",
@@ -181,7 +181,7 @@ export const experiences = [
     img: agcLogo,
     role: "Full-Stack Developer",
     company: "One Roof Web",
-    date: "Jun 2022 – Feb 2024",
+    date: "Oct 2023 – Mar 2025",
     desc: [
       "Architected scalable full-stack web applications from scratch and tailored multi-client platforms to diverse client specifications using React.js, Node.js, Express.js, and MongoDB.",
       "Engineered multi-client E-Commerce platform with secure JWT authentication, role-based access control (Admin, Staff, Customer), Razorpay payment gateway integration, and real-time inventory tracking.",

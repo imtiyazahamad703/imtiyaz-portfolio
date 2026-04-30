@@ -55,7 +55,8 @@ const Scene = () => {
     const light = setLighting(scene);
     light.turnOnLights(); // Turn on immediately
 
-    const { loadModels } = setCharacter(renderer, scene, camera);
+    let isMounted = true;
+    const { loadWavingModel, loadStandingModel } = setCharacter(renderer, scene, camera);
 
     let mouse = { x: 0, y: 0 },
       interpolation = { x: 0.1, y: 0.2 };
@@ -119,7 +120,12 @@ const Scene = () => {
       canvasDiv.current.addEventListener('mousemove', onCanvasMouseMove);
     }
 
-    loadModels().then(({ wavingGltf, standingGltf }) => {
+    // Start loading standing model in parallel in the background
+    const standingPromise = loadStandingModel();
+
+    // Render waving model immediately once it arrives for near-instant first paint
+    loadWavingModel().then((wavingGltf) => {
+      if (!isMounted) return;
       setIsLoaded(true);
 
       heroGroup = new THREE.Group();
@@ -131,12 +137,8 @@ const Scene = () => {
       proxyMesh.position.y = 1.0; 
       heroGroup.add(proxyMesh);
 
-      // Both models will be in the same position
       const wavingModel = wavingGltf.scene;
-      const standingModel = standingGltf.scene;
-
       heroGroup.add(wavingModel);
-      heroGroup.add(standingModel);
 
       // Scale up slightly to make it bigger (from 4.5 to 4.9)
       // Adjust Y to keep head framed correctly near the top
@@ -146,17 +148,12 @@ const Scene = () => {
 
       // Initially only waving is visible
       wavingModel.visible = true;
-      standingModel.visible = false;
 
       const wavingMixer = new THREE.AnimationMixer(wavingModel);
-      const standingMixer = new THREE.AnimationMixer(standingModel);
-      mixers.push(wavingMixer, standingMixer);
+      mixers.push(wavingMixer);
 
       const wavingClip = wavingGltf.animations.find(c => c.name === "Waving");
-      const standingClip = standingGltf.animations.find(c => c.name === "standing");
-
       let wavingAction: THREE.AnimationAction | null = null;
-      let standingAction: THREE.AnimationAction | null = null;
 
       if (wavingClip) {
         wavingAction = wavingMixer.clipAction(wavingClip);
@@ -166,54 +163,84 @@ const Scene = () => {
         wavingAction.timeScale = 0.6; // Slow down the waving animation
       }
 
-      if (standingClip) {
-        standingAction = standingMixer.clipAction(standingClip);
-        standingAction.setLoop(THREE.LoopRepeat, Infinity);
-      }
+      let standingModel: THREE.Group | null = null;
+      let standingAction: THREE.AnimationAction | null = null;
+      let hasWavingFinished = false;
 
-      // Transition when waving finishes
-      if (wavingAction) {
-        wavingMixer.addEventListener('finished', () => {
-          wavingModel.visible = false;
-          standingModel.visible = true;
-          setShowGreetingBubble(false);
-
-          if (standingAction) {
-            standingAction.play();
-          }
-
-          // Enable head tracking once standing
-          standingModel.traverse((child) => {
-            if (child.type === "Bone") {
-              const name = child.name.toLowerCase();
-              if (name.includes("neck") || name.includes("head")) {
-                headBone = child; // Robustly find the neck/head bone
-              }
-            }
-          });
-          animationStarted = true;
-        });
-      } else {
-        // Fallback if waving animation not found
+      const switchToStanding = () => {
+        if (!standingModel || !isMounted) return;
         wavingModel.visible = false;
         standingModel.visible = true;
-        if (standingAction) standingAction.play();
+        setShowGreetingBubble(false);
+
+        if (standingAction) {
+          standingAction.play();
+        }
+
+        // Enable head tracking once standing
         standingModel.traverse((child) => {
           if (child.type === "Bone") {
             const name = child.name.toLowerCase();
             if (name.includes("neck") || name.includes("head")) {
-              headBone = child;
+              headBone = child; // Robustly find the neck/head bone
             }
           }
         });
         animationStarted = true;
+      };
+
+      // When standing model finishes downloading in background, wire it up
+      standingPromise.then((standingGltf) => {
+        if (!isMounted || !heroGroup) return;
+        standingModel = standingGltf.scene;
+        heroGroup.add(standingModel);
+        standingModel.visible = false;
+
+        const standingMixer = new THREE.AnimationMixer(standingModel);
+        mixers.push(standingMixer);
+
+        const standingClip = standingGltf.animations.find(c => c.name === "standing");
+        if (standingClip) {
+          standingAction = standingMixer.clipAction(standingClip);
+          standingAction.setLoop(THREE.LoopRepeat, Infinity);
+        }
+
+        // If waving already finished while standing was downloading, transition now
+        if (hasWavingFinished) {
+          switchToStanding();
+        }
+      }).catch((err) => {
+        console.error("Error loading standing model:", err);
+      });
+
+      // Transition when waving finishes
+      if (wavingAction) {
+        wavingMixer.addEventListener('finished', () => {
+          hasWavingFinished = true;
+          if (standingModel) {
+            switchToStanding();
+          } else {
+            standingPromise.then(() => {
+              switchToStanding();
+            });
+          }
+        });
+      } else {
+        // Fallback if waving animation not found
+        hasWavingFinished = true;
+        standingPromise.then(() => {
+          switchToStanding();
+        });
       }
 
       const playWavingIntro = () => {
         if (!wavingAction) return;
         wavingModel.visible = true;
-        standingModel.visible = false;
+        if (standingModel) {
+          standingModel.visible = false;
+        }
         animationStarted = false; // Disable head tracking during wave
+        hasWavingFinished = false;
         
         setShowGreetingBubble(true);
 
@@ -236,8 +263,6 @@ const Scene = () => {
       }
 
       // Setup Camera
-      // Assuming scale 7.5 and position y=-7, the head is roughly around y=3-4
-      // We will place the camera to frame the upper body perfectly
       camera.position.set(0, 3, 22);
       camera.lookAt(0, 3, 0);
 
@@ -250,7 +275,7 @@ const Scene = () => {
           renderer,
           camera,
           canvasDiv,
-          standingModel
+          standingModel || wavingModel
         );
         camera.lookAt(0, 3, 0);
       };
@@ -265,10 +290,12 @@ const Scene = () => {
       }
 
       // Store cleanup on character object
-      (standingModel as any).__portfolioResizeHandler = () => {
+      (wavingModel as any).__portfolioResizeHandler = () => {
         resizeObserver.disconnect();
         observer.disconnect();
       };
+    }).catch((err) => {
+      console.error("Error loading waving model:", err);
     });
 
     const animate = () => {
@@ -345,6 +372,7 @@ const Scene = () => {
     animate();
 
     return () => {
+      isMounted = false;
       clearTimeout(debounce);
       scene.clear();
       renderer.dispose();
@@ -366,6 +394,16 @@ const Scene = () => {
     <>
       <div className="character-container">
         <div className="character-model" ref={canvasDiv}>
+          {/* Subtle loading spinner while 3D model loads */}
+          {!isLoaded && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10">
+              <div className="w-10 h-10 rounded-full border-2 border-purple-500/20 border-t-[#8245ec] animate-spin"></div>
+              <span className="text-[11px] text-purple-300/70 mt-3 font-medium tracking-wider animate-pulse">
+                Loading avatar...
+              </span>
+            </div>
+          )}
+
           {/* Greeting Bubble */}
           {showGreetingBubble && (
             <div className="absolute top-4 md:top-[6%] -left-6 md:left-4 w-max max-w-[85vw] z-50 animate-[fade-in-up_0.5s_ease-out_forwards]">
