@@ -173,17 +173,21 @@ export const experiences = [
   {
     id: 1,
     img: agcLogo,
-    role: "Full-Stack Intern",
+    role: "Full Stack Developer Intern",
     company: "One Roof Web",
-    date: "Oct 2024 – Mar 2025",
-    desc: "Spearheaded the end-to-end development of multiple tailored web applications for diverse clients at a digital marketing agency. Owned the complete project lifecycle, from designing responsive frontend interfaces to implementing robust backend CRUD systems and RESTful APIs. Ensured rapid delivery of scalable websites that met specific client requirements and improved their digital presence.",
+    date: "July 2023 – Feb 2024",
+    desc: "Worked as a Full Stack Developer Intern, architecting and maintaining MERN stack web applications for diverse client projects. Developed highly responsive and interactive user interfaces utilizing React.js and modern CSS. Implemented secure and scalable RESTful APIs using Node.js and Express.js, seamlessly integrating them with MongoDB for efficient data management. Successfully managed end-to-end CRUD functionalities, optimized application performance, and collaborated closely with cross-functional teams to deliver client-centric solutions on time.",
     skills: [
       "React.js",
-      "Spring Boot",
-      "MySQL",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "JavaScript",
       "REST APIs",
-      "Full-Stack Development",
-      "Client Delivery"
+      "Git",
+      "GitHub",
+      "HTML",
+      "CSS"
     ],
     link: "https://oneroofweb.in/",
   },
