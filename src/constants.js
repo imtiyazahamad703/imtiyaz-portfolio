@@ -44,10 +44,10 @@ const bsaLogo = '/logo/TilakLogo_New.png';
 import vpsLogo from './assets/education_logo/vps_logo.png';
 
 // Project Section Logo's
-import fcpImage from '../public/project_images/fcp.png';
-import exerlytixImage from '../public/project_images/exerlytix.png';
-import bidstreamImage from '../public/project_images/bidstream.png';
-import japImage from '../public/project_images/jap.png';
+const fcpImage = '/project_images/fcp.png';
+const exerlytixImage = '/project_images/exerlytix.png';
+const bidstreamImage = '/project_images/bidstream.png';
+const japImage = '/project_images/jap.png';
 
 
 // External Logos
