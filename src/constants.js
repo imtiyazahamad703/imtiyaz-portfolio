@@ -34,13 +34,13 @@ import postgreLogo from './assets/tech_logo/postgre.png';
 import csharpLogo from './assets/tech_logo/csharp.png';
 
 // Experience Section Logo's
-import webverseLogo from '../public/logo/mple-ai.webp';
-import agcLogo from '../public/logo/oneroofweb_logo.png';
+const webverseLogo = '/logo/mple-ai.webp';
+const agcLogo = '/logo/oneroofweb_logo.png';
 import newtonschoolLogo from './assets/company_logo/newtonschool_logo.png';
 
 // Education Section Logo's
-import glaLogo from '../public/logo/VESIT.png';
-import bsaLogo from '../public/logo/TilakLogo_New.png';
+const glaLogo = '/logo/VESIT.png';
+const bsaLogo = '/logo/TilakLogo_New.png';
 import vpsLogo from './assets/education_logo/vps_logo.png';
 
 // Project Section Logo's
