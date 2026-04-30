@@ -1,5 +1,5 @@
 import React from "react";
-import { FaLinkedin, FaGithub, FaEnvelope, FaTwitter } from "react-icons/fa";
+import { FaGithub, FaEnvelope, FaTwitter } from "react-icons/fa";
 
 const Footer = () => {
   // Smooth scroll function
@@ -39,7 +39,6 @@ const Footer = () => {
         <div className="flex flex-wrap justify-center space-x-6 mt-8">
           {[
             { icon: <FaGithub />, link: "https://github.com/imtiyazahamad703" },
-            { icon: <FaLinkedin />, link: "https://www.linkedin.com/in/imtiyazahamad703" },
             { icon: <FaEnvelope />, link: "mailto:imtiyazahamad703@gmail.com" },
             { icon: <FaTwitter />, link: "https://twitter.com/imtiyazahamad" },
           ].map((item, index) => (

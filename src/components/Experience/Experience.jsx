@@ -79,7 +79,17 @@ const Experience = () => {
                 </div>
               </div>
 
-              <p className="mt-6 text-gray-300 text-justify leading-relaxed text-sm sm:text-base">{experience.desc}</p>
+              {Array.isArray(experience.desc) ? (
+                <ul className="mt-6 space-y-2.5 text-gray-300 text-sm sm:text-base list-disc list-outside ml-4">
+                  {experience.desc.map((bullet, idx) => (
+                    <li key={idx} className="leading-relaxed">
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-6 text-gray-300 text-justify leading-relaxed text-sm sm:text-base">{experience.desc}</p>
+              )}
               <div className="mt-6">
                 <h5 className="font-semibold text-white mb-3">Skills:</h5>
                 <ul className="flex flex-wrap mt-2">

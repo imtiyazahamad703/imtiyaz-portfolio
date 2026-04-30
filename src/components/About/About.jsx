@@ -23,7 +23,7 @@ const About = () => {
           </h2>
           {/* Skills Heading with Typing Effect */}
           <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-4 text-[#8245ec] leading-tight">
-            <span className="text-white">I am a </span>
+            <span className="text-white">I am an </span>
             <ReactTypingEffect
               text={[
                 'AI Engineer',
@@ -40,12 +40,12 @@ const About = () => {
           </h3>
           {/* About Me Paragraph */}
           <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-10 mt-8 leading-relaxed md:leading-loose text-justify">
-            Full-Stack Software Engineer with expertise in building scalable microservices, event driven backends, and high-performance web applications. Skilled in modern frameworks (NestJs, NextJs, ReactJs) and leveraging LLMs, RAG pipelines, and WebRTC to deliver enterprise-grade applications.
+            AI Engineer / Full-Stack Software Engineer with hands-on experience building LLM-powered applications, RAG pipelines, AI agents, and scalable backend systems using TypeScript, Node.js, Express.js, NestJS, LangChain, MongoDB Vector Search, and cloud services. Experienced in integrating LLMs into real-time AI products, browser automation, and event-driven systems.
           </p>
           {/* Resume Button */}
           <a
-            href="/extra-data/Imtiyaz_Ahamad_AI_Engineer.pdf"
-            download="Imtiyaz_Ahamad_AI_Engineer.pdf"
+            href="/extra-data/Imtiyaz_Ahamad_MERN_AI_Engineer_Resume.pdf"
+            download="Imtiyaz_Ahamad_MERN_AI_Engineer_Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block text-white py-3 px-8 rounded-full mt-5 text-lg font-bold transition duration-300 transform hover:scale-105"

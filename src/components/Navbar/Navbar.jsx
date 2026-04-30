@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FiMenu, FiX, FiSend } from "react-icons/fi";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -77,14 +77,6 @@ const Navbar = () => {
             >
               <FaGithub size={18} />
             </a>
-            <a
-              href="https://www.linkedin.com/in/imtiyazahamad703"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-10 h-10 rounded-xl border border-gray-700/50 bg-[#0d081f]/80 flex items-center justify-center text-gray-300 hover:text-white hover:border-[#df00fe] transition"
-            >
-              <FaLinkedin size={18} />
-            </a>
             <a 
               href="#contact"
               onClick={(e) => { e.preventDefault(); handleMenuItemClick("contact"); }}
@@ -151,14 +143,6 @@ const Navbar = () => {
                   className="w-12 h-12 rounded-xl border border-gray-700 bg-black/30 flex items-center justify-center text-gray-300 hover:text-white hover:border-[#df00fe]"
                 >
                   <FaGithub size={24} />
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/imtiyazahamad703"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-12 h-12 rounded-xl border border-gray-700 bg-black/30 flex items-center justify-center text-gray-300 hover:text-white hover:border-[#df00fe]"
-                >
-                  <FaLinkedin size={24} />
                 </a>
               </div>
             </div>
