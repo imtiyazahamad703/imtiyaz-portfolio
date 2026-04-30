@@ -175,7 +175,7 @@ export const experiences = [
     img: agcLogo,
     role: "Full Stack Developer Intern",
     company: "One Roof Web",
-    date: "July 2023 – Feb 2024",
+    date: "Nov 2022 – Oct 2023",
     desc: "Worked as a Full Stack Developer Intern, architecting and maintaining MERN stack web applications for diverse client projects. Developed highly responsive and interactive user interfaces utilizing React.js and modern CSS. Implemented secure and scalable RESTful APIs using Node.js and Express.js, seamlessly integrating them with MongoDB for efficient data management. Successfully managed end-to-end CRUD functionalities, optimized application performance, and collaborated closely with cross-functional teams to deliver client-centric solutions on time.",
     skills: [
       "React.js",
