@@ -181,7 +181,7 @@ export const experiences = [
     img: agcLogo,
     role: "Full-Stack Developer",
     company: "One Roof Web",
-    date: "Jun 2022 – Feb 2024",
+    date: "Nov 2022 – Apr 2024",
     desc: [
       "Architected scalable full-stack web applications from scratch and tailored multi-client platforms to diverse client specifications using React.js, Node.js, Express.js, and MongoDB.",
       "Engineered multi-client E-Commerce platform with secure JWT authentication, role-based access control (Admin, Staff, Customer), Razorpay payment gateway integration, and real-time inventory tracking.",
